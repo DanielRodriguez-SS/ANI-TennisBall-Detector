@@ -6,4 +6,4 @@ On this project we intent to write a piece of software that will be able to iden
 * ML
 * Python
 * OpenCV
-* skleanr
+* scikit-learn
