@@ -4,6 +4,8 @@ On this project we intent to write a piece of software that will be able to iden
 * AI
 * ANI
 * ML
+* Supervised learning
+* Unstructure data
 * Python
 * OpenCV
 * scikit-learn
