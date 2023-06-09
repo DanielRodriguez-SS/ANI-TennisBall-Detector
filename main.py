@@ -9,3 +9,4 @@ https://safjan.com/convert-heic-and-heif-to-jpg-png-bmp-with-python/
 # Main
 
 print("Hola AI")
+print('Python is cool')
