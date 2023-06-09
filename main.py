@@ -7,3 +7,5 @@ from sklearn.metrics import accuracy_score
 https://safjan.com/convert-heic-and-heif-to-jpg-png-bmp-with-python/
 """
 # Main
+
+print("Hola AI")
