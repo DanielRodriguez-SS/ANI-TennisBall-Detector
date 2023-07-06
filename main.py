@@ -7,6 +7,9 @@ import pickle
 
 DIR_PATH_WITH_BALL = 'images/with_ball/copies_jpg'
 DIR_PATH_WITHOUT_BALL = 'images/without_ball/copies_jpg'
+DIR_PATH_TO_MODEL = 'trained_model/model_01.pkl'
+
+DIR_PATH_TO_IMAGE = 'images/with_ball/copies_jpg/IMG_6106.jpg'
 
 def preprocess_image(image_path:str):
     image = cv2.imread(image_path)
@@ -21,14 +24,14 @@ def extract_hog_features(image):
     hog_features = hog.compute(image)
     return hog_features.flatten()
 
-def train_and_save_model(x_train, y_train):
+def save_model(x_train, y_train):
     model = svm.SVC()
     model.fit(x_train, y_train)
-    with open('trained_model/model_01.pkl', 'wb') as file:
+    with open(DIR_PATH_TO_MODEL, 'wb') as file:
         pickle.dump(model, file)
     return model
 
-def main():
+def train_model():
     x = [] # Feature vectors
     y = [] # Labels
 
@@ -49,11 +52,34 @@ def main():
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
-    model = train_and_save_model(x_train, y_train)
+    model = save_model(x_train, y_train)
 
     y_pred = model.predict(x_test)
     accuracy = accuracy_score(y_test, y_pred)
     print(f'Accuracy: {accuracy}')
+
+def detect_object():
+    with open(DIR_PATH_TO_MODEL, 'rb') as file:
+        model = pickle.load(file)
+    
+    preprocessed_image = preprocess_image(DIR_PATH_TO_IMAGE)
+    hog_features = extract_hog_features(preprocessed_image)
+
+    label = model.predict([hog_features])[0]
+    class_names = ['non tennis ball','tennis ball']
+    predicted_class = class_names[label]
+    print(f'Predicted Class: {predicted_class}')
+
+    if predicted_class == 'tennis ball':
+        #image = cv2.imread(DIR_PATH_TO_IMAGE)
+        #cv2.imshow('Image detected',image)
+        cv2.imshow('Image detected',preprocessed_image)
+        cv2.waitKey(0)
+
+
+def main():
+    #train_model()
+    detect_object()
 
 if "__main__" == __name__:
     main()
